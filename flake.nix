@@ -107,18 +107,11 @@
         let
           pkgs = nixpkgs.legacyPackages.${system};
           releaseInfo = nixpkgs.lib.importJSON ./release.json;
-          docs = import ./docs {
-            inherit pkgs;
-            inherit (releaseInfo) release isReleaseBranch;
-          };
+
           hmPkg = pkgs.callPackage ./home-manager { path = toString ./.; };
         in {
           default = hmPkg;
           home-manager = hmPkg;
-
-          docs-html = docs.manual.html;
-          docs-json = docs.options.json;
-          docs-manpages = docs.manPages;
         });
 
       defaultPackage = forAllSystems (system: self.packages.${system}.default);
